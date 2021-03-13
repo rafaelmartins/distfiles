@@ -48,7 +48,7 @@ func main() {
 
 	r := mux.NewRouter()
 	r.HandleFunc("/", views.Upload).Methods("POST")
-	r.HandleFunc("/", views.Health)
+	r.HandleFunc("/health", views.Health)
 
 	h := handlers.CustomLoggingHandler(os.Stderr, r, logHandler)
 	h = handlers.RecoveryHandler(handlers.PrintRecoveryStack(true))(h)
