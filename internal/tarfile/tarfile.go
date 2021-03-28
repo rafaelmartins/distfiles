@@ -67,19 +67,6 @@ func Untar(path string, rs io.ReadSeeker) error {
 		fn := filepath.Join(path, hdr.Name)
 		m := os.FileMode(hdr.Mode) & os.ModePerm
 
-		// cleanup whatever we had previously
-		if st, err := os.Stat(fn); err == nil {
-			if st.IsDir() {
-				// as soon as we found an existing dir, cleanup everything.
-				// this saves us from cleaning up each file or link afterwards and gives us a clean base to extract
-				if err := os.RemoveAll(fn); err != nil {
-					return err
-				}
-			} else if err := os.Remove(fn); err != nil {
-				return err
-			}
-		}
-
 		// FIXME: change link mtimes somehow
 		switch hdr.Typeflag {
 		case tar.TypeLink:
