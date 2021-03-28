@@ -75,6 +75,9 @@ func Untar(path string, rs io.ReadSeeker) error {
 			err = os.Symlink(hdr.Linkname, fn)
 		case tar.TypeDir:
 			err = os.Mkdir(fn, m)
+			if os.IsExist(err) {
+				err = nil
+			}
 			// the ultimate trick (tm)
 			defer os.Chtimes(fn, time.Now(), hdr.ModTime)
 		case tar.TypeReg:
